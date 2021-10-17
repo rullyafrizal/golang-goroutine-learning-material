@@ -61,19 +61,19 @@
 - **Apabila** ada proses Goroutine yang sangat panjang dan lama untuk dieksekusi maka Go-Scheduler akan secara bergantian (concurrent) mengembalikan kembali Goroutine tersebut ke dalam queue dan mengambil kembali untuk dieksekusi hingga selesai
 
 
-### Pengenalan Channel 
+## Pengenalan Channel 
 - Channel adalah tempat komunikasi secara syncrhonous yang bisa dilakukan oleh Goroutine 
 - Di channel terdapat pengirim dan penerima, biasanya mereka dari Goroutine yang berbeda
 - Saat pengiriman data ke Channel, Goroutine akan ter-block, sampai ada yang menerima data tersebut 
 - Maka dari itu, Channel disebut sebagai alat komunikasi synchronous (blocking)
 - Channel cocok sekali sebagai alternatif mekanisme async-await (non-blocking)
 
-#### Mekanisme Channel 
+### Mekanisme Channel 
 - Membuat sebuah Channel (tempat mengirim data)
 - Goroutine mengirim data ke dalam Channel, dan akan ditahan di channel sampai ada yang mengambil (pengambil adalah Goroutine yang lain)
 - Goroutine mengambil data dari dalam Channel, apabila data belum ada maka akan ditunggu hingga data ada
 
-#### Karakteristik Channel 
+### Karakteristik Channel 
 - Secara default Channel hanya bisa menampung satu data, jika ingin tambah data, harus menunggu data di Channel diambil dulu 
 - Channel hanya bisa menerima satu jenis data 
 - Channel bisa diambil dari lebih dari satu Goroutine 
