@@ -129,3 +129,14 @@ Deadlock adalah keadaan dimana sebuah proses Goroutine saling menunggu lock sehi
 - Untuk menandai bahwa ada proses Goroutine, pakai method **Add(int)**
 - Menandai proses Goroutine telah selesai, pakai method **Done()**
 - Untuk menunggu semua proses selesai, pakai method **Wait()**
+
+## Once 
+- Once adalah fitur di Go yang bisa digunakan untuk meastika bahwa sebuah function hanya di eksekusi hanya sekali 
+- Seberapa banyak pun Goroutine yaang akses, dipastikan bahwa hanya Goroutine yang pertama yang bisa eksekusi programnya
+- Goroutine yang lain akan dihiraukan, tidak akan dieksekusi
+
+## Pool 
+- Pool adalah implementasi design pattern bernama **object pool pattern**
+- Sederhananya, **pool** ini digunakan untuk menyimpan data, selanjutnya untuk menggunakan datanya, kita bisa mengambil dari pool, dan setelah selesai, kita kembalikan lagi ke dalam pool-nya 
+- Implementasi Pool di Go sudah aman dari masalah race-condition 
+
