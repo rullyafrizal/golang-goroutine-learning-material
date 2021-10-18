@@ -140,3 +140,20 @@ Deadlock adalah keadaan dimana sebuah proses Goroutine saling menunggu lock sehi
 - Sederhananya, **pool** ini digunakan untuk menyimpan data, selanjutnya untuk menggunakan datanya, kita bisa mengambil dari pool, dan setelah selesai, kita kembalikan lagi ke dalam pool-nya 
 - Implementasi Pool di Go sudah aman dari masalah race-condition 
 
+## Cond 
+- Cond adalah implementasi locking berbasis kondisi 
+- Cond membutuhkan Locker (Mutex atau RWMutex) untuk implement lockingnya, namun beda dengan Locker biasa, di Cond terdapat function Wait() untuk menunggu apakah perlu menunggu atau tidak 
+- Function **Signal()** bisa digunakan untuk memberitahu sebuah Goroutine agar tidak perlu menunggu lagi
+- Function **Broadcast()** digunakan untuk memberitahu semua Goroutine agar tidak perlu menunggu lagi 
+- Deklarasi Cond -> sync.NewCond(Locker)
+
+## Atomic 
+- Atomic merupakan package yang digunakan untuk menggunakan data primitif secara aman pada proses concurrent 
+- Jika sebelumnya kita memakai Mutex untuk locking ketika ingin menaikkan angka di Counter untuk menghindari race-condition, kita juga bisa menggunakan Atomic Package
+
+### Timer 
+- Excecute proses setelah given time 
+
+### Ticker 
+- Execute proses every given time
+
