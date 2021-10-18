@@ -22,7 +22,7 @@
 | **Parallel**      | **Concurrency** |
 | ----------- | ----------- |
 | Menjalankan beberapa pekerjaan secara **bersamaan**      | Menjalankan beberapa pekerjaan secara **bergantian**      |
-| Butuh banyak thread   | Butuh sedikit thread        |
+| Butuh **banyak** thread   | Butuh **sedikit** thread        |
 
 ### Contoh Concurrency
 - Saat kita makan di cafe, kita bisa makan, lalu ngobrol, lalu minum, ngobrol lagi, dan berulang-ulang. Proses ini tidak bisa dilakukan secara bersamaan oleh seorang manusia (hanya bergantian dari satu hal ke hal yang lain)
@@ -79,6 +79,46 @@
 - Channel bisa diambil dari lebih dari satu Goroutine 
 - Channel harus di-close jika tidak dipakai, atau bisa menyebabkan **memory leak**
 
+### Buffered Channel 
+- Secara default channel hanya bisa menerima 1 data 
+- Jika menambah data ke-2, maka kita akan diminta menunggu sampa data pertama ada yang ambil 
+- Terkadang ada kasus di mana pengirim lebih cepat dibanding penerima, dalam hal ini jika kita pakai channel, otomatis pengirim akan lambat karena harus menunggu penerima mengambil data 
+- **Buffered Channel** : Buffer yang bisa dipakai untuk menampung data antrian yang akan dimasukkan ke channel
+
+#### Buffer Capacity
+- Bebas memasukkan berapa jumlah kapasitas queue di dalam buffer (harus di-set)
+- Jika memasukkan lebih dari kapasitas queue, maka harus menunggu dampai buffer ada yang kosong
+- Ini sangat cocok digunakan di Goroutine yang **penerima lebih lambat dari pengirim**
+
+### Range Channel 
+Jika ada kasus di mana sebuah channel menerima data secara terus menerus oleh pengirim, dan belum jelas kapan channel tersebut berhenti menerima data, maka :
+- Menggunakan perulangan range ketika menerima data dari channel 
+- Close channel, secara otomatis perulangan tersebut berhenti 
+Cara ini lebih sederhana dibanding melakukan pengecekan channel secara manual
+
+### Select Channel
+Jika ada kasus di mana kita membuat beberapa channel, dan menjalankan beberapa Goroutine, lalu kita ingin mendapatkan data dari semua channel tersebut maka :
+- Kita bisa memakai Select Channel 
+- Dengan Select Channel, kita bisa memilih data tercepat dari beberapa channel
+- Jika data datang dari beberapa channel secara bersamaan, maka akan dipilih secara random 
 
 
+## Race Condition 
+### Problem dengan Goroutine 
+- Saat kita menggunakan Goroutine, dia tidak hanya berjalan secara concurrent. Tetapi juga bisa parallel, yang artinya thread berjalan secara bersamaan
+- Hal ini sangat berbahaya ketika kita melakukan manipulasi data variabel yang sama oleh beberapa Goroutine secara bersamaan
+- Hal ini menyebabkan masalah yang dinamakan **Race Condition**
+**Race Condition** : Mekanisme melakukan manipulasi data variabel yang sama oleh beberapa Goroutine secara parallel (bersamaan)
 
+### Handle Race Condition dengan Mutex (Mutual Exclusion)
+- Untuk mengatasi problem **Race Condition**, di Go terdapat sebuah struct bawaan bernama **sync.Mutex**
+- Mutex bisa dipakai untuk melakukan locking dan unlocking, di mana ketika kita melakukan locking terhadap Mutex, maka tidak ada yang bisa melakukan locking lagi sampai kita melakukan unlock 
+- Dengan demikian, jika ada beberapa Goroutine melakukan lock terhadap Mutex, maka hanya 1 Goroutine yang diperbolehkan,  setelah Goroutine tersebut di-unlock, baru Goroutine selanjutnya diperbolehkan melakukan lock lagi 
+Solusi ini sangat cocok ketika ada masalah Race Condition 
+
+### RWMutex (Read Write Mutex)
+Jika ada kasus dimana kita ingin melakukan locking tidak hanya pada proses mengubah data, tapi juga membaca data. Jika kita menggunakan Mutex biasa akan terjadi masalah rebutan antara proses membaca dan mengubah 
+- Di Go disediakan struct **RWMutex** untuk menangani hal ini, dimana Mutex jenis ini memiliki dua lock, lock untuk **Read** dan lock untuk **Write**
+
+### Deadlock 
+Deadlock adalah keadaan dimana sebuah proses Goroutine saling menunggu lock sehingga tidak ada satupun Goroutine yang bisa jalan 
