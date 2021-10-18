@@ -122,3 +122,10 @@ Jika ada kasus dimana kita ingin melakukan locking tidak hanya pada proses mengu
 
 ### Deadlock 
 Deadlock adalah keadaan dimana sebuah proses Goroutine saling menunggu lock sehingga tidak ada satupun Goroutine yang bisa jalan 
+
+## WaitGroup 
+- WaitGroup adalah fitur yang bisa digunakan untuk menunggu sebuah proses selesai dilakukan 
+- Hal ini kadang diperlukan, misal kita ingin menjalankan beberapa proses menggunakan Goroutine, tetapi ingin semua proses selesai dahulu sebelum aplikasi kita 
+- Untuk menandai bahwa ada proses Goroutine, pakai method **Add(int)**
+- Menandai proses Goroutine telah selesai, pakai method **Done()**
+- Untuk menunggu semua proses selesai, pakai method **Wait()**
